@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "335bf30d1ff2322e9181b6dbf5baebe7",
+    "revision": "923526d1398135ebe725286490a46935",
     "url": "/randomhood/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/randomhood/static/css/2.3c03f26f.chunk.css"
   },
   {
-    "revision": "3534959ec05de4eca920",
+    "revision": "3174387eae9441ccca76",
     "url": "/randomhood/static/css/main.2f88c190.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/randomhood/static/js/2.cab51068.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "3534959ec05de4eca920",
-    "url": "/randomhood/static/js/main.1fb2760a.chunk.js"
+    "revision": "3174387eae9441ccca76",
+    "url": "/randomhood/static/js/main.cef45b9b.chunk.js"
   },
   {
     "revision": "ccc0082fd17e0dede276",
