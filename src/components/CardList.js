@@ -39,7 +39,7 @@ const CardList = ({ robots }) => {
                     )
                 })
             }
-            {/* {cardComponent} */}
+            
         </div>
     )
 };

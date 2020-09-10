@@ -69,23 +69,35 @@ class App extends Component {
 		// console.log(filteredRobots);
 	};
 
-	render() {
-        // //if you dont want to keep doing this.state.robots then destructure here:
+            // //if you dont want to keep doing this.state.robots then destructure here:
         // const {robots, searchfield } = this.state;
 
-        const filteredRobots =
-        this.state.robots.filter((rob) => {
+        //if it is an if else, can make it into ternary
+        // if (!this.state.robots.length){
+            //means if robots == 0 (which naturally is false), make it true via ! and execute this if block
+
+            // {/* its now referencing App's constructor this.state robots:robots and passed down as props to cardlist etc*/}
+    
+            //         {/* SHOWING ALL ROBOTS (WITH & WITHOUT STATE)*/}
+            //         {/* <CardList robots={this.state.robots} /> */}
+            //         {/* <CardList robots={robots} /> */}
+    
+            //         {/* SHOWING ALL OR FILTERED ROBOTS */}
+                    
+	render() {
+
+        const filteredRobots = this.state.robots.filter((rob) => {
 			return rob.name
 				.toLowerCase()
                 .includes(this.state.searchfield.toLowerCase());
 
         });
-        //if it is an if else, can make it into ternary
-        // if (!this.state.robots.length){
-            //means if robots == 0 (which naturally is false), make it true via ! and execute this if block
+        
             
-            return !this.state.robots.length ? 
-            (
+        return (
+
+             !this.state.robots.length ? (
+            
                 <div className="tc main-load-div">
                     <h1 className="tracking-in-expand">RandomHood</h1>
                     <div className="loader"></div>
@@ -94,19 +106,13 @@ class App extends Component {
                         Adapted from RoboFriends - By Andi L
                     </footer>
                 </div>
-            ) : 
-            (
+             ) : (
+            
                 <div className="tc">
                     <h1 className="tracking-in-expand">RandomHood</h1>
                     <SearchBox searchChange={this.onSearchChange} />
     
-                    {/* its now referencing App's constructor this.state robots:robots and passed down as props to cardlist etc*/}
-    
-                    {/* SHOWING ALL ROBOTS (WITH & WITHOUT STATE)*/}
-                    {/* <CardList robots={this.state.robots} /> */}
-                    {/* <CardList robots={robots} /> */}
-    
-                    {/* SHOWING ALL OR FILTERED ROBOTS */}
+                    
                     <Scroll>
                         <ErrorBoundary>
                             <CardList robots={filteredRobots} />
@@ -118,47 +124,12 @@ class App extends Component {
                     </footer>
     
                 </div>
+             
             )
+        )
 
-        //     if(!this.state.robots.length){
-        //     return (
-        //         <div className="tc main-load-div">
-        //             <h1 className="tracking-in-expand">RoboFriends</h1>
-        //             <div className="loader"></div>
-        //             <p> loading </p>
-        //             <footer>
-        //                 footer
-        //             </footer>
-        //         </div>
-        //     )
-        // } else {
-        //     return (
-        //         <div className="tc">
-        //             <h1 className="tracking-in-expand">RoboFriends</h1>
-        //             <SearchBox searchChange={this.onSearchChange} />
-    
-        //             {/* its now referencing App's constructor this.state robots:robots and passed down as props to cardlist etc*/}
-    
-        //             {/* SHOWING ALL ROBOTS (WITH & WITHOUT STATE)*/}
-        //             {/* <CardList robots={this.state.robots} /> */}
-        //             {/* <CardList robots={robots} /> */}
-    
-        //             {/* SHOWING ALL OR FILTERED ROBOTS */}
-        //             <Scroll>
-        //                 <CardList robots={filteredRobots} />
-        //             </Scroll>
-
-        //             <footer className="pv4">
-        //                 footer
-        //             </footer>
-    
-        //         </div>
-        //     );
-
-
-        // }
-		
-	}
+    }
 }
+
 
 export default App;
