@@ -1,134 +1,86 @@
-import React, { Component } from "react";
-// import { robots } from "./robots";
+import React, { useState, useEffect } from "react";
+import { ROBOTS } from "../robots";
 import SearchBox from "../components/SearchBox.js";
 import CardList from "../components/CardList.js";
 import './App.css';
 import Scroll from '../components/Scroll';
 import ErrorBoundary from '../components/ErrorBoundary';
 
-// const state ={
-//     robots: robots,
-//     searchfield: ''
-// }
 
-//STATE - an object that describes your application. & state that decribes this application is the robots and whatever is entered in the search box and state is able to change, able to change the value of the search box (val of input) and change what gets displayed.
-//a parent feeds state into a child component and as soon as child component receive a state, it is a property; that child can never change that property. the parent just tells it what state is, and the child receives as robot.
+function App(){
 
-//PROPS - property that we keep passing down. props are always just input that we get and we never modify them. props are things that come out of State
+    const [robots, setRobots] = useState([]);
+    const [searchfield, setSearchfield] = useState('');
+    const [count, setCount] = useState(0)
+    //useEffect gets called after every render (by default, without 2nd arg) - it will run endlessly if there is a setState or fetch within. ordinary function or console log will run only once. 
+    //with 2nd arg [] ---> it acts like componentDidMount. runs only once after the first render
+    //with a state or states included in 2nd arg, UE will watch if there is any changes (comparison) between previous and now, if there is, then it fires.
 
+    //Sequence with [] as 2nd arg (similar to CMD):
+    //1. state is updated with initialized empty [] for robots
+    //2. renders
+    //3. useEffect fires -fetch Data and mount like ComponentDidMount - updates robots state, trigger re-render
+    //4. renders
 
-//CHILDREN - 
-
-//state usually live in parent component. things that can change and affect our app. the parent component that passes the state to diff children components
-class App extends Component {
-	//constructor & render methods are prebuilt React component methods
-	constructor() {
-		super()
-		this.state = {
-            // robots: robots,
-			robots: [],
-			searchfield: "",
-        };
-        
-        // console.log('1')
-	}
-
-
-    //fetch is a window object. a tool that lets us make requests to servers
-    componentDidMount(){
+    useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/users')
         .then( response => response.json())
-        .then(users => {this.setState({robots: users})});
-        // .then( response => {
-        //     return response.json();
-        // })
-        // .then(users => {
-        //     this.setState({robots: users});
-        // });
-        // 
-        // console.log('2')
-    }
+        .then(users => setRobots(users));
+        console.log('effect')
+    }, [])
 
-
-
-	//custom function for search
-	//
-	onSearchChange = (event) => {
-		// console.log(event.target.value);
-		//searchfield starts with '', then whenever you type into the searchbox, searchfield gets updated with input below
-		this.setState({ searchfield: event.target.value });
-		//never do this.state.searchfield = xxx
-
-		//the value of this.state.robots is not refering to the App. instead referring to the input value (coz the event happend in the input) which does not have a state. therefore, must always do onsearchchange = (event) => { } instead of onsearchchange(event) {} so that this.state.robots will reference this App (Parent)
-
-
-        //put this filter into render to render the filtered robot page.
-		// const filteredRobots = this.state.robots.filter(rob => {
-		//     return rob.name.toLowerCase().includes(this.state.searchfield.toLowerCase());
-		// })
-		// console.log(filteredRobots);
-	};
-
-            // //if you dont want to keep doing this.state.robots then destructure here:
-        // const {robots, searchfield } = this.state;
-
-        //if it is an if else, can make it into ternary
-        // if (!this.state.robots.length){
-            //means if robots == 0 (which naturally is false), make it true via ! and execute this if block
-
-            // {/* its now referencing App's constructor this.state robots:robots and passed down as props to cardlist etc*/}
+    //to show 2nd param comparison for useEffect
+    // useEffect(() => {
+    //     console.log('UE Count', count)
+    // }, [count])
     
-            //         {/* SHOWING ALL ROBOTS (WITH & WITHOUT STATE)*/}
-            //         {/* <CardList robots={this.state.robots} /> */}
-            //         {/* <CardList robots={robots} /> */}
+    const onSearchChange = (event) => {
+        setSearchfield(event.target.value)
+
+    }; 
     
-            //         {/* SHOWING ALL OR FILTERED ROBOTS */}
-                    
-	render() {
+    const filteredRobots = robots.filter((rob) => {
+        return rob.name
+            .toLowerCase()
+            .includes(searchfield.toLowerCase());
+    });
 
-        const filteredRobots = this.state.robots.filter((rob) => {
-			return rob.name
-				.toLowerCase()
-                .includes(this.state.searchfield.toLowerCase());
-
-        });
+    console.log('renders')
+    return (
+            !robots.length ? (
         
-            
-        return (
+            <div className="tc main-load-div">
+                <h1 className="tracking-in-expand">RandomHood</h1>
+                <div className="loader"></div>
+                <p> loading </p>
+                <footer>
+                    Adapted from RoboFriends - By Andi L
+                </footer>
+            </div>
+            ) : (
+        
+            <div className="tc">
+                <h1 className="tracking-in-expand">RandomHood</h1>
+                {/* <div>{count}</div>
+                <button onClick={()=>setCount(count+1)}>Count Up</button> */}
+                <SearchBox searchChange={onSearchChange} />
 
-             !this.state.robots.length ? (
-            
-                <div className="tc main-load-div">
-                    <h1 className="tracking-in-expand">RandomHood</h1>
-                    <div className="loader"></div>
-                    <p> loading </p>
-                    <footer>
-                        Adapted from RoboFriends - By Andi L
-                    </footer>
-                </div>
-             ) : (
-            
-                <div className="tc">
-                    <h1 className="tracking-in-expand">RandomHood</h1>
-                    <SearchBox searchChange={this.onSearchChange} />
-    
-                    
-                    <Scroll>
-                        <ErrorBoundary>
-                            <CardList robots={filteredRobots} />
-                        </ErrorBoundary>
-                    </Scroll>
+                <Scroll>
+                    <ErrorBoundary>
+                        <CardList robots={filteredRobots} />
+                    </ErrorBoundary>
+                </Scroll>
 
-                    <footer className="pv4">
-                    Adapted from ZTM RoboFriends - <a href="https://andrealau.netlify.app/">Andi L</a>
-                    </footer>
-    
-                </div>
-             
-            )
+                <footer className="pv4">
+                Adapted from ZTM RoboFriends - <a href="https://andrealau.netlify.app/">Andi L</a>
+                </footer>
+
+            </div>
+            
         )
+    )
 
-    }
+    
 }
 
 
